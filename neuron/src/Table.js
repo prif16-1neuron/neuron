@@ -1,81 +1,87 @@
 import React, { Component } from "react";
-import { useReactTable } from "react-table";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
+import { data } from "./Utils";
 
 class Table extends Component {
+  constructor() {
+    super();
+    this.state = {
+      data: data
+    };
+    this.renderEditable = this.renderEditable.bind(this);
+  }
+  renderEditable(cellInfo) {
+    return (
+      <div
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={e => {
+          const data = [...this.state.data];
+          data[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+          for (var i = 0; i < data.length; i++) {
+            var temp = data[i].x1 * data[i].w1 + data[i].x2 * data[i].w2;
+            //console.log(data[i]);
+            //console.log(temp);
+            if (temp >= 1) data[i].t = 1;
+            else data[i].t = 0;
+          }
+          this.setState({ data });
+        }}
+        dangerouslySetInnerHTML={{
+          __html: this.state.data[cellInfo.index][cellInfo.column.id]
+        }}
+      />
+    );
+  }
   render() {
-    const data = [
-      {
-        x1: 0,
-        x2: 0,
-        w1: 0.8,
-        w2: 0.4,
-        t: 0
-      },
-      {
-        x1: 0,
-        x2: 1,
-        w1: 0.3,
-        w2: 0.1,
-        t: 0
-      },
-      {
-        x1: 1,
-        x2: 0,
-        w1: -0.5,
-        w2: 0.4,
-        t: 1
-      },
-      {
-        x1: 1,
-        x2: 1,
-        w1: 0.2,
-        w2: -0.2,
-        t: 1
-      }
-    ];
-
-    const columns = [
-      {
-        Header: "Input",
-        accessor: "input", // String-based value accessors!,
-        columns: [
+    const { data } = this.state;
+    return (
+      <ReactTable
+        data={data}
+        columns={[
           {
-            id: 'x1',
-            Header: "X1",
-            accessor: d => d.x1
+            Header: "Input",
+            columns: [
+              {
+                Header: "X1",
+                accessor: "x1",
+                Cell: this.renderEditable
+              },
+              {
+                Header: "X2",
+                accessor: "x2",
+                Cell: this.renderEditable
+              },
+              {
+                Header: "W1",
+                accessor: "w1",
+                Cell: this.renderEditable
+              },
+              {
+                Header: "W2",
+                accessor: "w2",
+                Cell: this.renderEditable
+              }
+            ]
           },
           {
-            id: 'x2',
-            Header: "X2",
-            accessor: d => d.x2 
-          },
-          {
-            id: 'w1',
-            Header: "W1",
-            accessor: d => d.w1
-          },
-          {
-            id: 'w2',
-            Header: "W2",
-            accessor: d => d.w2
+            Header: "Output",
+            columns: [
+              {
+                Header: "t",
+                accessor: "t"
+              }
+            ]
           }
-        ]
-      },
-      {
-        Header: "Output",
-        columns: [
-          {
-            id: 'outputResult',
-            Header: "t",
-            accessor: d => d.t
-          }
-        ]
-      }
-    ];
-
-    return <ReactTable data={data} columns={columns} defaultPageSize={4} showPageSizeOptions={false} showPagination={false}/>;
+        ]}
+        defaultPageSize={4}
+        showPageSizeOptions={false}
+        showPagination={false}
+        sortable={false}
+        resizable={false}
+      />
+    );
   }
 }
 export default Table;
