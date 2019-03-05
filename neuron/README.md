@@ -1,5 +1,9 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Documentation
+
+React-table: https://github.com/tannerlinsley/react-table/tree/v6#cdn
+
 ## Available Scripts
 
 In the project directory, you can run:
