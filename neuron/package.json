@@ -2,13 +2,17 @@
   "name": "neuron",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://prif16-1neuron.github.io/neuron/",
   "dependencies": {
+    "gh-pages": "^2.0.1",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-scripts": "2.1.5",
     "react-table": "^6.9.2"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -b master -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

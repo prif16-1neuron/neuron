@@ -3,6 +3,8 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import { data } from "./Utils";
 
+const x0 = 1;
+
 class Table extends Component {
   constructor() {
     super();
@@ -20,7 +22,7 @@ class Table extends Component {
           const data = [...this.state.data];
           data[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
           for (var i = 0; i < data.length; i++) {
-            var temp = data[i].x1 * data[i].w1 + data[i].x2 * data[i].w2;
+            var temp = data[i].x1 * data[i].w1 + data[i].x2 * data[i].w2 + x0;
             //console.log(data[i]);
             //console.log(temp);
             if (temp >= 1) data[i].t = 1;
@@ -46,22 +48,26 @@ class Table extends Component {
               {
                 Header: "X1",
                 accessor: "x1",
-                Cell: this.renderEditable
+                Cell: this.renderEditable,
+                style: {borderColor: 'white'},
               },
               {
                 Header: "X2",
                 accessor: "x2",
-                Cell: this.renderEditable
+                Cell: this.renderEditable,
+                style: {borderColor: 'white'}
               },
               {
                 Header: "W1",
                 accessor: "w1",
-                Cell: this.renderEditable
+                Cell: this.renderEditable,
+                style: {borderColor: 'white'}
               },
               {
                 Header: "W2",
                 accessor: "w2",
-                Cell: this.renderEditable
+                Cell: this.renderEditable,
+                style: {borderColor: 'white'}
               }
             ]
           },
@@ -70,7 +76,8 @@ class Table extends Component {
             columns: [
               {
                 Header: "t",
-                accessor: "t"
+                accessor: "t",
+                style: {borderColor: 'white'}
               }
             ]
           }
@@ -80,6 +87,10 @@ class Table extends Component {
         showPagination={false}
         sortable={false}
         resizable={false}
+        style={{
+          border: '1px solid white',
+          
+        }}
       />
     );
   }
