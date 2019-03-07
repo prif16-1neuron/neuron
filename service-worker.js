@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/neuron/precache-manifest.bab86382fc8a0808f676e75c0026ed89.js"
+  "/neuron/precache-manifest.485a67b4ba6c799050a68545fd7550f4.js"
 );
 
 workbox.clientsClaim();
