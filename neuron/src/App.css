@@ -42,6 +42,7 @@
   padding-bottom: 10px; 
   padding-left: 20px;
   padding-right: 20px;
+  cursor: pointer;
 }
 
 .Button-clicked {
@@ -63,6 +64,7 @@
   padding-bottom: 10px;  
   padding-left: 20px;
   padding-right: 20px;
+  cursor: pointer;
 }
 
 .Button:active {
