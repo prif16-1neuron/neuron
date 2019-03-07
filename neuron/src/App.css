@@ -36,8 +36,12 @@
   border-top-right-radius: 25px;
   border-bottom-left-radius: 25px;
   border-top-left-radius: 25px;
+  margin-top: 50px;
   margin-bottom: 25px;
-  padding: 0;
+  padding-top: 10px;
+  padding-bottom: 10px; 
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .Button-clicked {
@@ -53,8 +57,12 @@
   border-top-right-radius: 25px;
   border-bottom-left-radius: 25px;
   border-top-left-radius: 25px;
+  margin-top: 50px;
   margin-bottom: 25px;
-  padding: 0;  
+  padding-top: 10px;
+  padding-bottom: 10px;  
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .Button:active {
@@ -62,13 +70,13 @@
 }
 
 .Button span {
-  margin-left: 20px;
+  margin-left: 40px;
   margin-right: 10px;
   color: #FFFFFF;
 }
 
 .Button-clicked span{
-  margin-left: 20px;
+  margin-left: 40px;
   margin-right: 10px;
   color: #4527a0;
 }
