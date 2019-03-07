@@ -49,25 +49,25 @@ class Table extends Component {
                 Header: "X1",
                 accessor: "x1",
                 Cell: this.renderEditable,
-                style: {borderColor: 'white'},
+                //style: {borderColor: 'white'},
               },
               {
                 Header: "X2",
                 accessor: "x2",
                 Cell: this.renderEditable,
-                style: {borderColor: 'white'}
+                //style: {borderColor: 'white'}
               },
               {
                 Header: "W1",
                 accessor: "w1",
                 Cell: this.renderEditable,
-                style: {borderColor: 'white'}
+                //style: {borderColor: 'white'}
               },
               {
                 Header: "W2",
                 accessor: "w2",
                 Cell: this.renderEditable,
-                style: {borderColor: 'white'}
+                //style: {borderColor: 'white'}
               }
             ]
           },
@@ -77,7 +77,7 @@ class Table extends Component {
               {
                 Header: "t",
                 accessor: "t",
-                style: {borderColor: 'white'}
+                //style: {borderColor: 'white'}
               }
             ]
           }

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import logo from './images/Logo.png';
 import './App.css';
-import Table from './Table.js';
+import TableManual from './TableManual.js';
+import TableAuto from './TableAuto.js';
 
 class App extends Component {
   constructor() {
@@ -24,7 +25,7 @@ class App extends Component {
           <img src={logo} alt="" className="App-logo"/>
           <button onClick={this.handleClick} className={this.state.class}>Manual <span>Auto</span></button>
           <div>
-            <Table />
+            {this.state.class === "Button" ? <TableManual /> : <TableAuto />}
           </div>
         </header>
       </div>
