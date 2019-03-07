@@ -65,14 +65,12 @@ class Table extends Component {
                 Header: "W1",
                 accessor: "w1",
                 headerStyle: tableStyle,
-                Cell: this.renderEditable,
                 style: tableStyle
               },
               {
                 Header: "W2",
                 accessor: "w2",
                 headerStyle: tableStyle,
-                Cell: this.renderEditable,
                 style: tableStyle
               }
             ]
