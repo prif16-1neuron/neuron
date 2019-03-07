@@ -4,6 +4,7 @@ import "react-table/react-table.css";
 import { data } from "./Utils";
 
 const x0 = 1;
+const tableStyle = {backgroundColor: 'rgba(45, 25, 107, 0.6)', borderTop: '1px solid white', borderLeft: '1px solid white'};
 
 class Table extends Component {
   constructor() {
@@ -44,40 +45,47 @@ class Table extends Component {
         columns={[
           {
             Header: "Input",
+            headerStyle: tableStyle,
             columns: [
               {
                 Header: "X1",
                 accessor: "x1",
+                headerStyle: tableStyle,
                 Cell: this.renderEditable,
-                //style: {borderColor: 'white'},
+                style: {borderTop: '1px solid white', borderLeft: '1px solid white'},
               },
               {
                 Header: "X2",
                 accessor: "x2",
+                headerStyle: tableStyle,
                 Cell: this.renderEditable,
-                //style: {borderColor: 'white'}
+                style: {borderTop: '1px solid white', borderLeft: '1px solid white'},
               },
               {
                 Header: "W1",
                 accessor: "w1",
+                headerStyle: tableStyle,
                 Cell: this.renderEditable,
-                //style: {borderColor: 'white'}
+                style: {borderTop: '1px solid white', borderLeft: '1px solid white'},
               },
               {
                 Header: "W2",
                 accessor: "w2",
+                headerStyle: tableStyle,
                 Cell: this.renderEditable,
-                //style: {borderColor: 'white'}
+                style: {borderTop: '1px solid white', borderLeft: '1px solid white'}
               }
             ]
           },
           {
             Header: "Output",
+            headerStyle: tableStyle,
             columns: [
               {
                 Header: "t",
+                headerStyle: tableStyle,
                 accessor: "t",
-                //style: {borderColor: 'white'}
+                style: tableStyle,
               }
             ]
           }
@@ -89,7 +97,8 @@ class Table extends Component {
         resizable={false}
         style={{
           border: '1px solid white',
-          
+          borderRight: '2px solid white',
+          borderBottom: '2px solid white'
         }}
       />
     );
