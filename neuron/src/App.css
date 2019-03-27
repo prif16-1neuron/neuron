@@ -1,84 +1,84 @@
 .App {
-  text-align: center;
-  background-image: url(./images/Background.png);
+	text-align: center;
+	background-image: url(./images/Background.png);
 }
 
 .App-header {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: calc(10px + 2vmin);
+	color: white;
 }
 
 .App-link {
-  color: #61dafb;
+	color: #61dafb;
 }
 
 .App-logo {
-  height: 20vmin;
-  pointer-events: none;
-  margin-bottom: 15px;
+	height: 20vmin;
+	pointer-events: none;
+	margin-bottom: 15px;
 }
 
 .Button {
-  background-image: linear-gradient(to left, #4527a0 50%, #FFFFFF 50%);
-  min-width: 125px;
-  min-height: 25px;
-  color: #4527a0;
-  font-family: -apple-system, BlinkMacSystemFont, Roboto;
-  font-weight: bold;
-  border: 2px solid white;
-  align-items: center;
-  border-bottom-right-radius: 25px;
-  border-top-right-radius: 25px;
-  border-bottom-left-radius: 25px;
-  border-top-left-radius: 25px;
-  margin-top: 50px;
-  margin-bottom: 25px;
-  padding-top: 10px;
-  padding-bottom: 10px; 
-  padding-left: 20px;
-  padding-right: 20px;
-  cursor: pointer;
+	background-image: linear-gradient(to left, #4527a0 50%, #ffffff 50%);
+	min-width: 125px;
+	min-height: 25px;
+	color: #4527a0;
+	font-family: -apple-system, BlinkMacSystemFont, Roboto;
+	font-weight: bold;
+	border: 2px solid white;
+	align-items: center;
+	border-bottom-right-radius: 25px;
+	border-top-right-radius: 25px;
+	border-bottom-left-radius: 25px;
+	border-top-left-radius: 25px;
+	margin-top: 50px;
+	margin-bottom: 25px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+	cursor: pointer;
 }
 
 .Button-clicked {
-  background-image: linear-gradient(to left, #ffffff 50%, #4527a0 50%);
-  min-width: 125px;
-  min-height: 25px;
-  color: #FFFFFF;
-  font-family: -apple-system, BlinkMacSystemFont, Roboto;
-  font-weight: bold;
-  border: 2px solid white;
-  align-items: center;
-  border-bottom-right-radius: 25px;
-  border-top-right-radius: 25px;
-  border-bottom-left-radius: 25px;
-  border-top-left-radius: 25px;
-  margin-top: 50px;
-  margin-bottom: 25px;
-  padding-top: 10px;
-  padding-bottom: 10px;  
-  padding-left: 20px;
-  padding-right: 20px;
-  cursor: pointer;
+	background-image: linear-gradient(to left, #ffffff 50%, #4527a0 50%);
+	min-width: 125px;
+	min-height: 25px;
+	color: #ffffff;
+	font-family: -apple-system, BlinkMacSystemFont, Roboto;
+	font-weight: bold;
+	border: 2px solid white;
+	align-items: center;
+	border-bottom-right-radius: 25px;
+	border-top-right-radius: 25px;
+	border-bottom-left-radius: 25px;
+	border-top-left-radius: 25px;
+	margin-top: 50px;
+	margin-bottom: 25px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+	cursor: pointer;
 }
 
 .Button:active {
-  transform: none;
+	transform: none;
 }
 
 .Button span {
-  margin-left: 40px;
-  margin-right: 10px;
-  color: #FFFFFF;
+	margin-left: 40px;
+	margin-right: 10px;
+	color: #ffffff;
 }
 
-.Button-clicked span{
-  margin-left: 40px;
-  margin-right: 10px;
-  color: #4527a0;
+.Button-clicked span {
+	margin-left: 40px;
+	margin-right: 10px;
+	color: #4527a0;
 }
