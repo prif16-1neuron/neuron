@@ -72,7 +72,7 @@ class Table1 extends Component {
 		};
 		this.handleChange = this.handleChange.bind(this);
 	}
-	fetchData(url = `http://localhost:8080/v1/calculate`) {
+	fetchData(url = `https://powerful-beyond-88239.herokuapp.com/v1/calculate`) {
 		this.setState({
 			isLoading: true
 		});
@@ -103,7 +103,7 @@ class Table1 extends Component {
 	}
 
 	componentDidMount() {
-		//this.fetchData();
+		this.fetchData();
 	}
 
 	handleChange = row => event => {
@@ -114,7 +114,7 @@ class Table1 extends Component {
 		} else temp[row][column] = parseInt(event.target.value);
 		this.setState({ data: { data: temp } });
 
-		//this.fetchData();
+		this.fetchData();
 	};
 
 	render() {

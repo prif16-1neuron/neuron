@@ -17,6 +17,7 @@ const styles = theme => ({
 	root: {
 		width: '100%',
 		marginTop: theme.spacing.unit * 3,
+		paddingBottom: 50,
 		overflowX: 'auto',
 		backgroundColor: 'transparent'
 	},
@@ -166,9 +167,11 @@ class Table1 extends Component {
 		this.state = {
 			data: data,
 			isLoading: false,
-			layer: 'Linear'
+			layer: 'Linear',
+			xColumns: 2
 		};
 		this.handleChange = this.handleChange.bind(this);
+		this.handleXChange = this.handleXChange.bind(this);
 	}
 	fetchData(url = `http://localhost:8080/v1/calculate`) {
 		this.setState({
@@ -221,17 +224,23 @@ class Table1 extends Component {
 
 		//this.fetchData();
 	};
+	handleXChange(event) {
+		this.setState({ [event.target.id]: parseInt(event.target.value) });
+	}
 
 	render() {
-		const { data } = this.state;
+		const { data } = this.state.data;
 		const { classes } = this.props;
-		console.log(this.state);
+		const xCols = Array.apply(null, new Array(this.state.xColumns)).map((_, i) => i);
+		const xColsRow = Array.apply(null, new Array(this.state.xColumns - 1)).map((_, i) => i);
+		console.log(xCols);
 		return (
 			<div>
 				<form className={classes.container} noValidate autoComplete="off">
 					<TextField1
-						inputProps={{ type: 'number', min: '2', style: { color: '#FFFFFF', width: 150 } }}
-						defaultValue={2}
+						inputProps={{ type: 'number', min: '2', max: '3', style: { color: '#FFFFFF', width: 150 } }}
+						value={this.state.xColumns}
+						onChange={this.handleXChange}
 						error
 						label="Xn columns"
 						id="xColumns"
@@ -290,7 +299,12 @@ class Table1 extends Component {
 					<Table className={classes.table}>
 						<TableHead className={classes.table}>
 							<TableRow>
-								<TableCell colSpan={5} className={classes.font} align="center" padding="dense">
+								<TableCell
+									colSpan={3 + this.state.xColumns}
+									className={classes.font}
+									align="center"
+									padding="dense"
+								>
 									Inputs
 								</TableCell>
 								<TableCell colSpan={2} className={classes.font} align="center" padding="dense">
@@ -298,12 +312,16 @@ class Table1 extends Component {
 								</TableCell>
 							</TableRow>
 							<TableRow>
-								<TableCell className={classes.font} align="center" padding="dense">
-									X1
-								</TableCell>
-								<TableCell className={classes.font} align="center" padding="dense">
-									X2
-								</TableCell>
+								{xCols.map(index => (
+									<TableCell
+										key={'headX' + index}
+										className={classes.font}
+										align="center"
+										padding="dense"
+									>
+										X{index + 1}
+									</TableCell>
+								))}
 								<TableCell className={classes.font} align="center" padding="dense">
 									W0
 								</TableCell>
@@ -322,85 +340,95 @@ class Table1 extends Component {
 							</TableRow>
 						</TableHead>
 						<TableBody>
-							{data.data.map((row, i) => (
-								<TableRow key={i}>
-									<TableCell id="X1" className={classes.fontEditable} align="center" padding="none">
-										<InputBase
-											id="x1"
-											onChange={this.handleChange(i)}
-											inputProps={{ type: 'number', min: '0', max: '1' }}
-											className={classes.InputOfX}
-											defaultValue={row.x1}
-										/>
-									</TableCell>
-									<TableCell id="X2" className={classes.fontEditable} align="center" padding="none">
-										<InputBase
-											id="x2"
-											onChange={this.handleChange(i)}
-											inputProps={{ type: 'number', min: '0', max: '1' }}
-											className={classes.InputOfX}
-											value={row.x2}
-										/>
-									</TableCell>
-									{i === 0 ? (
+							{data.map((row, i) =>
+								xColsRow.map(index => (
+									<TableRow key={i + index}>
 										<TableCell
-											id="W0"
-											className={classes.font}
-											rowSpan={4}
+											id="X1"
+											className={classes.fontEditable}
 											align="center"
 											padding="none"
 										>
 											<InputBase
-												id="w0"
-												onChange={this.handleChange()}
-												inputProps={{ type: 'number', min: '-1', max: '1', step: '0.05' }}
-												className={classes.Input}
-												defaultValue={row.w0}
+												id="x1"
+												onChange={this.handleChange(i)}
+												inputProps={{ type: 'number', min: '0', max: '1' }}
+												className={classes.InputOfX}
+												defaultValue={row.x1}
 											/>
 										</TableCell>
-									) : null}
-									{i === 0 ? (
 										<TableCell
-											id="W1"
-											className={classes.font}
-											rowSpan={4}
+											id="X2"
+											className={classes.fontEditable}
 											align="center"
 											padding="none"
 										>
 											<InputBase
-												id="w1"
-												onChange={this.handleChange()}
-												inputProps={{ type: 'number', min: '-1', max: '1', step: '0.05' }}
-												className={classes.Input}
-												defaultValue={row.w1}
+												id="x2"
+												onChange={this.handleChange(i)}
+												inputProps={{ type: 'number', min: '0', max: '1' }}
+												className={classes.InputOfX}
+												defaultValue={row.x2}
 											/>
 										</TableCell>
-									) : null}
-									{i === 0 ? (
-										<TableCell
-											id="W2"
-											className={classes.font}
-											rowSpan={4}
-											align="center"
-											padding="none"
-										>
-											<InputBase
-												id="w2"
-												onChange={this.handleChange()}
-												inputProps={{ type: 'number', min: '-1', max: '1', step: '0.05' }}
-												className={classes.Input}
-												defaultValue={row.w2}
-											/>
+										{this.state.xColumns === 3 ? (
+											<TableCell
+												id="X3"
+												className={classes.fontEditable}
+												align="center"
+												padding="none"
+											>
+												<InputBase
+													id="x3"
+													onChange={this.handleChange(i)}
+													inputProps={{ type: 'number', min: '0', max: '1' }}
+													className={classes.InputOfX}
+													defaultValue={row.x3}
+												/>
+											</TableCell>
+										) : null}
+										{index > 0 ? null : i === 0 ? (
+											<TableCell
+												id="W0"
+												className={classes.font}
+												rowSpan={2 ** this.state.xColumns}
+												align="center"
+												padding="none"
+											>
+												{row.w0}
+											</TableCell>
+										) : null}
+										{index > 0 ? null : i === 0 ? (
+											<TableCell
+												id="W1"
+												className={classes.font}
+												rowSpan={2 ** this.state.xColumns}
+												align="center"
+												padding="none"
+											>
+												{row.w1}
+											</TableCell>
+										) : null}
+										{index > 0 ? null : i === 0 ? (
+											<TableCell
+												id="W2"
+												className={classes.font}
+												rowSpan={2 ** this.state.xColumns}
+												align="center"
+												padding="none"
+											>
+												{row.w2}
+											</TableCell>
+										) : null}
+										<TableCell id="y" className={classes.output} align="center" padding="dense">
+											{row.y}
 										</TableCell>
-									) : null}
-									<TableCell id="y" className={classes.output} align="center" padding="dense">
-										{row.y}
-									</TableCell>
-									<TableCell id="t" className={classes.output} align="center" padding="dense">
-										{row.t}
-									</TableCell>
-								</TableRow>
-							))}
+										<TableCell id="t" className={classes.output} align="center" padding="dense">
+											{row.t}
+										</TableCell>
+									</TableRow>
+								))
+							)}
 						</TableBody>
 					</Table>
 				</Paper>
