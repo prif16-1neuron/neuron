@@ -28,7 +28,7 @@ self.__precacheManifest = [
     "url": "/neuron/static/css/2.1e5b6a41.chunk.css"
   },
   {
-    "revision": "d2783b9901e558e8a2090c3b5e98f508",
+    "revision": "659d6e3dabe388c0a58292096e273dda",
     "url": "/neuron/index.html"
   }
 ];
