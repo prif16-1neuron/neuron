@@ -72,34 +72,32 @@ class Table1 extends Component {
 		};
 		this.handleChange = this.handleChange.bind(this);
 	}
-	fetchData(url = `https://powerful-beyond-88239.herokuapp.com/v1/calculate`) {
-		this.setState({
-			isLoading: true
-		});
-		fetch(url, {
-			method: 'POST',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(this.state.data)
-		})
-			.then(response => response.json())
-			.then(receivedData => {
-				let temp = [...this.state.data.data];
-				for (let i = 0; i < temp.length; i++) {
-					temp[i].t = parseInt(receivedData[i]['t']);
-				}
-				this.setState({
-					data: { data: temp },
-					isLoading: false
-				});
-			})
-			.catch(error => this.setState({ error, isLoading: false }));
-	}
 
-	componentWillMount() {
-		console.log(this.state.data);
+	async fetchData() {
+		try {
+			const response = await fetch(`https://powerful-beyond-88239.herokuapp.com/v1/calculate`, {
+				method: 'POST',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(this.state.data)
+			});
+			if (!response.ok) {
+				throw Error(response.statusText);
+			}
+			const json = await response.json();
+			let temp = [...this.state.data.data];
+			for (let i = 0; i < temp.length; i++) {
+				temp[i].t = parseInt(json[i]['t']);
+			}
+			this.setState({
+				data: { data: temp },
+				isLoading: false
+			});
+		} catch (error) {
+			this.setState({ error, isLoading: false });
+		}
 	}
 
 	componentDidMount() {
@@ -120,7 +118,6 @@ class Table1 extends Component {
 	render() {
 		const { data } = this.state;
 		const { classes } = this.props;
-		console.log(this.state);
 		return (
 			<Paper className={classes.root} square elevation={0}>
 				<Table className={classes.table}>
@@ -160,8 +157,14 @@ class Table1 extends Component {
 								<TableCell id="X1" className={classes.fontEditable} align="center" padding="none">
 									<InputBase
 										id="x1"
+										variant="filled"
 										onChange={this.handleChange(i)}
-										inputProps={{ type: 'number', min: '0', max: '1' }}
+										inputProps={{
+											type: 'number',
+											min: '0',
+											max: '1',
+											style: { color: 'white', fontSize: '1.5rem', fontWeight: 500 }
+										}}
 										className={classes.InputOfX}
 										defaultValue={row.x1}
 									/>
@@ -186,7 +189,7 @@ class Table1 extends Component {
 										<InputBase
 											id="w0"
 											onChange={this.handleChange()}
-											inputProps={{ type: 'number', min: '-1', max: '1', step: '0.05' }}
+											inputProps={{ type: 'number', min: '-15', max: '15', step: '0.05' }}
 											className={classes.Input}
 											defaultValue={row.w0}
 										/>
@@ -203,7 +206,7 @@ class Table1 extends Component {
 										<InputBase
 											id="w1"
 											onChange={this.handleChange()}
-											inputProps={{ type: 'number', min: '-1', max: '1', step: '0.05' }}
+											inputProps={{ type: 'number', min: '-15', max: '15', step: '0.05' }}
 											className={classes.Input}
 											defaultValue={row.w1}
 										/>
@@ -220,7 +223,7 @@ class Table1 extends Component {
 										<InputBase
 											id="w2"
 											onChange={this.handleChange()}
-											inputProps={{ type: 'number', min: '-1', max: '1', step: '0.05' }}
+											inputProps={{ type: 'number', min: '-15', max: '15', step: '0.05' }}
 											className={classes.Input}
 											defaultValue={row.w2}
 										/>

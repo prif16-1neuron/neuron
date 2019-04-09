@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import 'react-table/react-table.css';
-import { data } from './Utils';
+import { data } from './Utils.1.js';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -168,72 +168,72 @@ class Table1 extends Component {
 			data: data,
 			isLoading: false,
 			layer: 'Linear',
+			iterations: 100,
+			rate: 0.1,
 			xColumns: 2
 		};
 		this.handleChange = this.handleChange.bind(this);
 		this.handleXChange = this.handleXChange.bind(this);
-	}
-	fetchData(url = `http://localhost:8080/v1/calculate`) {
-		this.setState({
-			isLoading: true
-		});
-		fetch(url, {
-			method: 'POST',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(this.state.data)
-		})
-			.then(response => response.json())
-			.then(receivedData => {
-				let temp = [...this.state.data.data];
-				for (let i = 0; i < temp.length; i++) {
-					temp[i].t = parseInt(receivedData[i]['t']);
-				}
-				this.setState({
-					data: { data: temp },
-					isLoading: false
-				});
-			})
-			.catch(error => this.setState({ error, isLoading: false }));
+		this.handleClick = this.handleClick.bind(this);
 	}
 
-	componentWillMount() {
-		console.log(this.state.data);
-	}
-
-	componentDidMount() {
-		//this.fetchData();
+	async fetchData() {
+		const combined = {
+			data: this.state.data.data,
+			layer: this.state.layer,
+			iterations: this.state.iterations,
+			rate: this.state.rate
+		};
+		try {
+			const response = await fetch(`https://powerful-beyond-88239.herokuapp.com/v1/calculate/auto`, {
+				method: 'POST',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(combined)
+			});
+			if (!response.ok) {
+				throw Error(response.statusText);
+			}
+			const json = await response.json();
+			let temp = [...this.state.data.data];
+			for (let i = 0; i < temp.length; i++) {
+				temp[i].t = parseInt(json[i]['t']);
+			}
+			this.setState({
+				data: { data: temp },
+				isLoading: false
+			});
+		} catch (error) {
+			this.setState({ error, isLoading: false });
+		}
 	}
 
 	handleChange = row => event => {
 		let temp = [...this.state.data.data];
 		let column = event.target.id;
-		if (column === 'w0' || column === 'w1' || column === 'w2') {
-			for (let i = 0; i < temp.length; i++) {
-				temp[i][column] = parseFloat(event.target.value).toFixed(2);
-				this.setState({ data: { data: temp } });
-			}
-		} else if (row === 'layer') {
+		if (row === 'layer' || row === 'iterations' || row === 'rate') {
 			this.setState({ [row]: event.target.value });
 		} else {
 			temp[row][column] = parseInt(event.target.value);
 			this.setState({ data: { data: temp } });
 		}
-
-		//this.fetchData();
 	};
 	handleXChange(event) {
 		this.setState({ [event.target.id]: parseInt(event.target.value) });
 	}
 
+	handleClick() {
+		this.fetchData();
+	}
+
 	render() {
-		const { data } = this.state.data;
+		var { data } = this.state.data;
+
 		const { classes } = this.props;
 		const xCols = Array.apply(null, new Array(this.state.xColumns)).map((_, i) => i);
-		const xColsRow = Array.apply(null, new Array(this.state.xColumns - 1)).map((_, i) => i);
-		console.log(xCols);
+
 		return (
 			<div>
 				<form className={classes.container} noValidate autoComplete="off">
@@ -276,23 +276,29 @@ class Table1 extends Component {
 							step: '100',
 							style: { color: '#FFFFFF', width: 150 }
 						}}
-						defaultValue={100}
+						value={this.state.iterations}
+						onChange={this.handleChange('iterations')}
 						error
 						label="Iterations per click"
 						id="iterations"
 					/>
-					<Button variant="contained" className={classes.button}>
-						Train
-					</Button>
 					<TextField1
-						inputProps={{ type: 'number', min: '0', step: '0.5', style: { color: '#FFFFFF', width: 150 } }}
-						defaultValue={0.5}
+						inputProps={{
+							type: 'number',
+							min: '0',
+							max: '1',
+							step: '0.1',
+							style: { color: '#FFFFFF', width: 150 }
+						}}
+						style={{ marginLeft: 10 }}
+						value={this.state.rate}
+						onChange={this.handleChange('rate')}
 						error
 						label="Learning rate"
 						id="learningRate"
 					/>
-					<Button variant="contained" className={classes.button}>
-						Start
+					<Button variant="contained" className={classes.button} onClick={this.handleClick}>
+						Train
 					</Button>
 				</form>
 				<Paper className={classes.root} square elevation={0}>
@@ -300,7 +306,7 @@ class Table1 extends Component {
 						<TableHead className={classes.table}>
 							<TableRow>
 								<TableCell
-									colSpan={3 + this.state.xColumns}
+									colSpan={this.state.xColumns === 2 ? 5 : 7}
 									className={classes.font}
 									align="center"
 									padding="dense"
@@ -325,12 +331,16 @@ class Table1 extends Component {
 								<TableCell className={classes.font} align="center" padding="dense">
 									W0
 								</TableCell>
-								<TableCell className={classes.font} align="center" padding="dense">
-									W1
-								</TableCell>
-								<TableCell className={classes.font} align="center" padding="dense">
-									W2
-								</TableCell>
+								{xCols.map(index => (
+									<TableCell
+										key={'headW' + index}
+										className={classes.font}
+										align="center"
+										padding="dense"
+									>
+										W{index + 1}
+									</TableCell>
+								))}
 								<TableCell className={classes.font} align="center" padding="dense">
 									y
 								</TableCell>
@@ -340,94 +350,204 @@ class Table1 extends Component {
 							</TableRow>
 						</TableHead>
 						<TableBody>
-							{data.map((row, i) =>
-								xColsRow.map(index => (
-									<TableRow key={i + index}>
-										<TableCell
-											id="X1"
-											className={classes.fontEditable}
-											align="center"
-											padding="none"
-										>
-											<InputBase
-												id="x1"
-												onChange={this.handleChange(i)}
-												inputProps={{ type: 'number', min: '0', max: '1' }}
-												className={classes.InputOfX}
-												defaultValue={row.x1}
-											/>
-										</TableCell>
-										<TableCell
-											id="X2"
-											className={classes.fontEditable}
-											align="center"
-											padding="none"
-										>
-											<InputBase
-												id="x2"
-												onChange={this.handleChange(i)}
-												inputProps={{ type: 'number', min: '0', max: '1' }}
-												className={classes.InputOfX}
-												defaultValue={row.x2}
-											/>
-										</TableCell>
-										{this.state.xColumns === 3 ? (
+							{data.map(
+								(row, i) =>
+									this.state.xColumns === 2 ? (
+										i % 2 === 0 ? (
+											<TableRow key={i}>
+												<TableCell
+													id="X1"
+													className={classes.fontEditable}
+													align="center"
+													padding="none"
+												>
+													<InputBase
+														id="x1"
+														onChange={this.handleChange(i)}
+														inputProps={{ type: 'number', min: '0', max: '1' }}
+														className={classes.InputOfX}
+														defaultValue={row.x1}
+													/>
+												</TableCell>
+												<TableCell
+													id="X2"
+													className={classes.fontEditable}
+													align="center"
+													padding="none"
+												>
+													<InputBase
+														id="x2"
+														onChange={this.handleChange(i)}
+														inputProps={{ type: 'number', min: '0', max: '1' }}
+														className={classes.InputOfX}
+														defaultValue={row.x2}
+													/>
+												</TableCell>
+												{this.state.xColumns === 3 ? (
+													<TableCell
+														id="X3"
+														className={classes.fontEditable}
+														align="center"
+														padding="none"
+													>
+														<InputBase
+															id="x3"
+															onChange={this.handleChange(i)}
+															inputProps={{ type: 'number', min: '0', max: '1' }}
+															className={classes.InputOfX}
+															defaultValue={row.x3}
+														/>
+													</TableCell>
+												) : null}
+												{i === 0 ? (
+													<TableCell
+														id="W0"
+														className={classes.font}
+														rowSpan={2 ** this.state.xColumns}
+														align="center"
+														padding="none"
+													>
+														{row.w0}
+													</TableCell>
+												) : null}
+												{i === 0 ? (
+													<TableCell
+														id="W1"
+														className={classes.font}
+														rowSpan={2 ** this.state.xColumns}
+														align="center"
+														padding="none"
+													>
+														{row.w1}
+													</TableCell>
+												) : null}
+												{i === 0 ? (
+													<TableCell
+														id="W2"
+														className={classes.font}
+														rowSpan={2 ** this.state.xColumns}
+														align="center"
+														padding="none"
+													>
+														{row.w2}
+													</TableCell>
+												) : null}
+												<TableCell
+													id="y"
+													className={classes.output}
+													align="center"
+													padding="dense"
+												>
+													{row.y}
+												</TableCell>
+												<TableCell
+													id="t"
+													className={classes.output}
+													align="center"
+													padding="dense"
+												>
+													{row.t}
+												</TableCell>
+											</TableRow>
+										) : null
+									) : (
+										<TableRow key={i}>
 											<TableCell
-												id="X3"
+												id="X1"
 												className={classes.fontEditable}
 												align="center"
 												padding="none"
 											>
 												<InputBase
-													id="x3"
+													id="x1"
 													onChange={this.handleChange(i)}
 													inputProps={{ type: 'number', min: '0', max: '1' }}
 													className={classes.InputOfX}
-													defaultValue={row.x3}
+													defaultValue={row.x1}
 												/>
 											</TableCell>
-										) : null}
-										{index > 0 ? null : i === 0 ? (
 											<TableCell
-												id="W0"
-												className={classes.font}
-												rowSpan={2 ** this.state.xColumns}
+												id="X2"
+												className={classes.fontEditable}
 												align="center"
 												padding="none"
 											>
-												{row.w0}
+												<InputBase
+													id="x2"
+													onChange={this.handleChange(i)}
+													inputProps={{ type: 'number', min: '0', max: '1' }}
+													className={classes.InputOfX}
+													defaultValue={row.x2}
+												/>
 											</TableCell>
-										) : null}
-										{index > 0 ? null : i === 0 ? (
-											<TableCell
-												id="W1"
-												className={classes.font}
-												rowSpan={2 ** this.state.xColumns}
-												align="center"
-												padding="none"
-											>
-												{row.w1}
+											{this.state.xColumns === 3 ? (
+												<TableCell
+													id="X3"
+													className={classes.fontEditable}
+													align="center"
+													padding="none"
+												>
+													<InputBase
+														id="x3"
+														onChange={this.handleChange(i)}
+														inputProps={{ type: 'number', min: '0', max: '1' }}
+														className={classes.InputOfX}
+														defaultValue={row.x3}
+													/>
+												</TableCell>
+											) : null}
+											{i === 0 ? (
+												<TableCell
+													id="W0"
+													className={classes.font}
+													rowSpan={2 ** this.state.xColumns}
+													align="center"
+													padding="none"
+												>
+													{row.w0}
+												</TableCell>
+											) : null}
+											{i === 0 ? (
+												<TableCell
+													id="W1"
+													className={classes.font}
+													rowSpan={2 ** this.state.xColumns}
+													align="center"
+													padding="none"
+												>
+													{row.w1}
+												</TableCell>
+											) : null}
+											{i === 0 ? (
+												<TableCell
+													id="W2"
+													className={classes.font}
+													rowSpan={2 ** this.state.xColumns}
+													align="center"
+													padding="none"
+												>
+													{row.w2}
+												</TableCell>
+											) : null}
+											{i === 0 ? (
+												<TableCell
+													id="W3"
+													className={classes.font}
+													rowSpan={2 ** this.state.xColumns}
+													align="center"
+													padding="none"
+												>
+													{row.w3}
+												</TableCell>
+											) : null}
+											<TableCell id="y" className={classes.output} align="center" padding="dense">
+												{row.y}
 											</TableCell>
-										) : null}
-										{index > 0 ? null : i === 0 ? (
-											<TableCell
-												id="W2"
-												className={classes.font}
-												rowSpan={2 ** this.state.xColumns}
-												align="center"
-												padding="none"
-											>
-												{row.w2}
+											<TableCell id="t" className={classes.output} align="center" padding="dense">
+												{row.t}
 											</TableCell>
-										) : null}
-										<TableCell id="y" className={classes.output} align="center" padding="dense">
-											{row.y}
-										</TableCell>
-										<TableCell id="t" className={classes.output} align="center" padding="dense">
-											{row.t}
-										</TableCell>
-									</TableRow>
-								))
+										</TableRow>
+									)
 							)}
 						</TableBody>
 					</Table>
