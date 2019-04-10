@@ -135,7 +135,17 @@ const styles = theme => ({
 			borderBottom: `1px solid white`
 		}
 	},
-	error: {}
+	error: {},
+	'@media (max-width: 480px)': {
+		table: {
+			transform: 'scale(0.6)',
+			transformOrigin: '5%'
+		},
+		root: {
+			maxWidth: 'auto',
+			height: 'auto'
+		}
+	}
 });
 const TextField1 = withStyles(styles)(function TextField({ classes, ...props }) {
 	return (
@@ -346,7 +356,7 @@ class Table1 extends Component {
 				</form>
 				<Paper className={classes.root} square elevation={0}>
 					<Table className={classes.table}>
-						<TableHead className={classes.table}>
+						<TableHead>
 							<TableRow>
 								<TableCell
 									colSpan={this.state.xColumns === 2 ? 5 : 7}

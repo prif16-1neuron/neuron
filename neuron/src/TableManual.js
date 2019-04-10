@@ -23,12 +23,21 @@ const styles = theme => ({
 	},
 	table: {
 		width: '50vw',
-
 		position: 'relative',
 		margin: 'auto',
 		borderTop: '1px solid white',
 		borderLeft: '1px solid white',
 		borderRight: '1px solid white'
+	},
+	'@media (max-width: 480px)': {
+		table: {
+			transform: 'scale(0.6)',
+			transformOrigin: '5%'
+		},
+		root: {
+			maxWidth: 'auto',
+			height: 'auto'
+		}
 	},
 	font: {
 		color: '#FFFFFF',
@@ -152,7 +161,7 @@ class Table1 extends Component {
 		return (
 			<Paper className={classes.root} square elevation={0}>
 				<Table className={classes.table}>
-					<TableHead className={classes.table}>
+					<TableHead>
 						<TableRow>
 							<TableCell colSpan={5} className={classes.font} align="center" padding="dense">
 								Inputs

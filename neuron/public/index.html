@@ -24,11 +24,12 @@
     <div id="root"></div>
     <script>
       $(document).ready(function(){
+        $("#paper1").hide();
         $("#paperBtn").click(function(){
-          $("#paper1").hide();
+          $("#paper1").slideUp(700, 'linear');
         });
         $("#expBtn").click(function(){
-          $("#paper1").show();
+          $("#paper1").slideDown(500, 'linear');
         });
       });
       </script>

@@ -47,6 +47,10 @@
 	cursor: pointer;
 }
 
+.Button:hover {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.39);
+}
+
 .Button-clicked {
 	background-image: linear-gradient(to left, #ffffff 50%, #4527a0 50%);
 	min-width: 125px;
@@ -69,6 +73,10 @@
 	cursor: pointer;
 }
 
+.Button-clicked:hover {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.39);
+}
+
 .Button:active {
 	transform: none;
 }
@@ -86,15 +94,63 @@
 }
 
 .Outlines {
-	width: 25vw;
-	height: 50vh;
+	width: 100%;
+	height: 100%;
 	position: absolute;
 	z-index: 1;
-	background: rgba(45, 25, 107, 0.6);
+	background: rgba(0, 0, 0, 0.8);
+	transition: 0.8s ease;
 }
 
 @media screen and (max-width: 480px) {
 	.Outlines {
-		width: 75vw;
+		width: 100%;
 	}
+}
+
+.menu {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	visibility: visible;
+	overflow: auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.menu > div {
+	display: flex;
+	flex: none;
+	align-items: center;
+	justify-content: center;
+	transform: scale(1);
+	transition: all 0.4s ease;
+}
+
+.menu > div > div {
+	text-align: center;
+	max-width: 90vw;
+	max-height: 100vh;
+	opacity: 1;
+	transition: opacity 0.4s ease;
+}
+
+.menu > div > div > ul > li {
+	list-style: none;
+	color: #fff;
+	font-size: 1.5rem;
+	padding: 1rem;
+}
+
+.menu > div > div > ul > li > a {
+	color: inherit;
+	text-decoration: none;
+	transition: color 0.4s ease;
+}
+
+.expBtn:hover {
+	background-color: #fff !important;
 }

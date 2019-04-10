@@ -4,16 +4,28 @@ import './App.css';
 import TableManual from './TableManual';
 import TableAuto from './TableAuto.js';
 import Outlines from './Outlines';
-import { Button } from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 
-const style = {
+const styles = theme => ({
 	expBtn: {
 		color: 'white',
+		width: 50,
+		height: 50,
+		backgroundColor: 'rgba(45, 25, 107, 1)',
 		position: 'fixed',
-		left: 0,
-		top: 0
+		right: 25,
+		bottom: 25,
+		boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+		'&:hover': {}
+	},
+	'@media (max-width: 480px)': {
+		expBtn: {
+			right: 5,
+			bottom: 5
+		}
 	}
-};
+});
 
 class App extends Component {
 	constructor() {
@@ -30,23 +42,18 @@ class App extends Component {
 	}
 
 	render() {
+		const { classes } = this.props;
 		return (
 			<div className="App">
 				<header className="App-header">
-					<Button id="expBtn" style={style.expBtn}>
-						Explanation
-					</Button>
 					<img src={logo} alt="" className="App-logo" />
 					<button onClick={this.handleClick} className={this.state.class}>
 						Manual <span>Auto</span>
 					</button>
-					{this.state.class === 'Button' ? (
-						<div>
-							<TableManual />
-						</div>
-					) : (
-						<TableAuto />
-					)}
+					{this.state.class === 'Button' ? <TableManual /> : <TableAuto />}
+					<IconButton id="expBtn" className={classes.expBtn}>
+						?
+					</IconButton>
 					<Outlines className="OutlinesPos" />
 				</header>
 			</div>
@@ -54,4 +61,4 @@ class App extends Component {
 	}
 }
 
-export default App;
+export default withStyles(styles)(App);
