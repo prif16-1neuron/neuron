@@ -12,17 +12,26 @@ import InputBase from '@material-ui/core/InputBase';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextFieldMui from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 const styles = theme => ({
 	root: {
-		width: '100%',
+		width: '99vw',
+		//height: '55vh',
 		marginTop: theme.spacing.unit * 3,
-		paddingBottom: 50,
+		paddingBottom: 20,
 		overflowX: 'auto',
+		overflowY: 'hidden',
 		backgroundColor: 'transparent'
 	},
 	table: {
-		minWidth: 500,
+		width: '50vw',
+		position: 'relative',
+		margin: 'auto',
+		overflowY: 'hidden',
+		//marginBottom: 0,
 		borderTop: '1px solid white',
 		borderLeft: '1px solid white',
 		borderRight: '1px solid white'
@@ -94,9 +103,9 @@ const styles = theme => ({
 		}
 	},
 	container: {
-		display: 'flex',
-		flexWrap: 'wrap',
-		margin: 0
+		position: 'relative',
+		margin: 'auto',
+		width: '50vw'
 	},
 	textField: {
 		marginLeft: theme.spacing.unit,
@@ -170,7 +179,9 @@ class Table1 extends Component {
 			layer: 'Linear',
 			iterations: 100,
 			rate: 0.1,
-			xColumns: 2
+			xColumns: 2,
+			open: false,
+			message: ''
 		};
 		this.handleChange = this.handleChange.bind(this);
 		this.handleXChange = this.handleXChange.bind(this);
@@ -184,6 +195,7 @@ class Table1 extends Component {
 			iterations: this.state.iterations,
 			rate: this.state.rate
 		};
+		this.setState({ isLoading: true });
 		try {
 			const response = await fetch(`https://powerful-beyond-88239.herokuapp.com/v1/calculate/auto`, {
 				method: 'POST',
@@ -200,6 +212,7 @@ class Table1 extends Component {
 			let temp = [...this.state.data.data];
 			for (let i = 0; i < temp.length; i++) {
 				temp[i].t = parseInt(json[i]['t']);
+				temp[i].y = parseFloat(json[i]['y']);
 			}
 			this.setState({
 				data: { data: temp },
@@ -214,19 +227,44 @@ class Table1 extends Component {
 		let temp = [...this.state.data.data];
 		let column = event.target.id;
 		if (row === 'layer' || row === 'iterations' || row === 'rate') {
-			this.setState({ [row]: event.target.value });
+			if (row === 'iterations' && event.target.value < 1) {
+				this.setState({ open: true, message: 'Wrong amount of iterations' });
+			} else if (row === 'rate' && (event.target.value < 0 || event.target.value > 1)) {
+				this.setState({ open: true, message: 'Wrong learning rate' });
+			} else {
+				this.setState({ [row]: event.target.value });
+			}
 		} else {
-			temp[row][column] = parseInt(event.target.value);
-			this.setState({ data: { data: temp } });
+			if (parseInt(event.target.value) < 0 || parseInt(event.target.value) > 1) {
+				this.setState({ open: true, message: 'Incorect value of X' });
+			} else {
+				temp[row][column] = parseInt(event.target.value);
+				this.setState({ data: { data: temp } });
+			}
 		}
 	};
 	handleXChange(event) {
-		this.setState({ [event.target.id]: parseInt(event.target.value) });
+		if (event.target.value < 2 || event.target.value > 3) {
+			this.setState({
+				open: true,
+				message: "Wrong amout of X's"
+			});
+		} else {
+			this.setState({ [event.target.id]: parseInt(event.target.value) });
+		}
 	}
 
 	handleClick() {
 		this.fetchData();
 	}
+
+	handleClose = (event, reason) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+
+		this.setState({ open: false, message: '' });
+	};
 
 	render() {
 		var { data } = this.state.data;
@@ -297,7 +335,12 @@ class Table1 extends Component {
 						label="Learning rate"
 						id="learningRate"
 					/>
-					<Button variant="contained" className={classes.button} onClick={this.handleClick}>
+					<Button
+						disabled={this.state.isLoading}
+						variant="contained"
+						className={classes.button}
+						onClick={this.handleClick}
+					>
 						Train
 					</Button>
 				</form>
@@ -366,7 +409,7 @@ class Table1 extends Component {
 														onChange={this.handleChange(i)}
 														inputProps={{ type: 'number', min: '0', max: '1' }}
 														className={classes.InputOfX}
-														defaultValue={row.x1}
+														value={row.x1}
 													/>
 												</TableCell>
 												<TableCell
@@ -380,7 +423,7 @@ class Table1 extends Component {
 														onChange={this.handleChange(i)}
 														inputProps={{ type: 'number', min: '0', max: '1' }}
 														className={classes.InputOfX}
-														defaultValue={row.x2}
+														value={row.x2}
 													/>
 												</TableCell>
 												{this.state.xColumns === 3 ? (
@@ -395,7 +438,7 @@ class Table1 extends Component {
 															onChange={this.handleChange(i)}
 															inputProps={{ type: 'number', min: '0', max: '1' }}
 															className={classes.InputOfX}
-															defaultValue={row.x3}
+															value={row.x3}
 														/>
 													</TableCell>
 												) : null}
@@ -463,7 +506,7 @@ class Table1 extends Component {
 													onChange={this.handleChange(i)}
 													inputProps={{ type: 'number', min: '0', max: '1' }}
 													className={classes.InputOfX}
-													defaultValue={row.x1}
+													value={row.x1}
 												/>
 											</TableCell>
 											<TableCell
@@ -477,7 +520,7 @@ class Table1 extends Component {
 													onChange={this.handleChange(i)}
 													inputProps={{ type: 'number', min: '0', max: '1' }}
 													className={classes.InputOfX}
-													defaultValue={row.x2}
+													value={row.x2}
 												/>
 											</TableCell>
 											{this.state.xColumns === 3 ? (
@@ -492,7 +535,7 @@ class Table1 extends Component {
 														onChange={this.handleChange(i)}
 														inputProps={{ type: 'number', min: '0', max: '1' }}
 														className={classes.InputOfX}
-														defaultValue={row.x3}
+														value={row.x3}
 													/>
 												</TableCell>
 											) : null}
@@ -552,6 +595,30 @@ class Table1 extends Component {
 						</TableBody>
 					</Table>
 				</Paper>
+				<Snackbar
+					anchorOrigin={{
+						vertical: 'bottom',
+						horizontal: 'left'
+					}}
+					open={this.state.open}
+					autoHideDuration={6000}
+					onClose={this.handleClose}
+					ContentProps={{
+						'aria-describedby': 'message-id'
+					}}
+					message={<span id="message-id">{this.state.message}</span>}
+					action={[
+						<IconButton
+							key="close"
+							aria-label="Close"
+							color="inherit"
+							className={classes.close}
+							onClick={this.handleClose}
+						>
+							<CloseIcon />
+						</IconButton>
+					]}
+				/>
 			</div>
 		);
 	}

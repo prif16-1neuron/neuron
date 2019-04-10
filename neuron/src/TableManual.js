@@ -9,16 +9,23 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 const styles = theme => ({
 	root: {
-		width: '100%',
+		width: '99vw',
+		height: '55vh',
 		marginTop: theme.spacing.unit * 3,
 		overflowX: 'auto',
 		backgroundColor: 'transparent'
 	},
 	table: {
-		minWidth: 500,
+		width: '50vw',
+
+		position: 'relative',
+		margin: 'auto',
 		borderTop: '1px solid white',
 		borderLeft: '1px solid white',
 		borderRight: '1px solid white'
@@ -68,7 +75,9 @@ class Table1 extends Component {
 		super();
 		this.state = {
 			data: data,
-			isLoading: false
+			isLoading: false,
+			open: false,
+			message: ''
 		};
 		this.handleChange = this.handleChange.bind(this);
 	}
@@ -108,11 +117,33 @@ class Table1 extends Component {
 		let temp = [...this.state.data.data];
 		let column = event.target.id;
 		if (column === 'w0' || column === 'w1' || column === 'w2') {
-			for (let i = 0; i < temp.length; i++) temp[i][column] = parseFloat(event.target.value).toFixed(2);
-		} else temp[row][column] = parseInt(event.target.value);
-		this.setState({ data: { data: temp } });
+			if (column === 'w0' && (event.target.value < -15 || event.target.value > 15)) {
+				this.setState({ open: true, message: 'Incorrect value of W0' });
+			} else if (column === 'w1' && (event.target.value < -15 || event.target.value > 15)) {
+				this.setState({ open: true, message: 'Incorrect value of W1' });
+			} else if (column === 'w2' && (event.target.value < -15 || event.target.value > 15)) {
+				this.setState({ open: true, message: 'Incorrect value of W2' });
+			} else {
+				for (let i = 0; i < temp.length; i++) temp[i][column] = parseFloat(event.target.value).toFixed(2);
+			}
+		} else {
+			if (event.target.value < 0 || event.target.value > 1) {
+				this.setState({ open: true, message: 'Incorect value of X' });
+			} else {
+				temp[row][column] = parseInt(event.target.value);
+				this.setState({ data: { data: temp } });
+			}
+		}
 
 		this.fetchData();
+	};
+
+	handleClose = (event, reason) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+
+		this.setState({ open: false, message: '' });
 	};
 
 	render() {
@@ -166,7 +197,7 @@ class Table1 extends Component {
 											style: { color: 'white', fontSize: '1.5rem', fontWeight: 500 }
 										}}
 										className={classes.InputOfX}
-										defaultValue={row.x1}
+										value={row.x1}
 									/>
 								</TableCell>
 								<TableCell id="X2" className={classes.fontEditable} align="center" padding="none">
@@ -191,7 +222,7 @@ class Table1 extends Component {
 											onChange={this.handleChange()}
 											inputProps={{ type: 'number', min: '-15', max: '15', step: '0.05' }}
 											className={classes.Input}
-											defaultValue={row.w0}
+											value={row.w0}
 										/>
 									</TableCell>
 								) : null}
@@ -208,7 +239,7 @@ class Table1 extends Component {
 											onChange={this.handleChange()}
 											inputProps={{ type: 'number', min: '-15', max: '15', step: '0.05' }}
 											className={classes.Input}
-											defaultValue={row.w1}
+											value={row.w1}
 										/>
 									</TableCell>
 								) : null}
@@ -225,7 +256,7 @@ class Table1 extends Component {
 											onChange={this.handleChange()}
 											inputProps={{ type: 'number', min: '-15', max: '15', step: '0.05' }}
 											className={classes.Input}
-											defaultValue={row.w2}
+											value={row.w2}
 										/>
 									</TableCell>
 								) : null}
@@ -236,6 +267,30 @@ class Table1 extends Component {
 						))}
 					</TableBody>
 				</Table>
+				<Snackbar
+					anchorOrigin={{
+						vertical: 'bottom',
+						horizontal: 'left'
+					}}
+					open={this.state.open}
+					autoHideDuration={6000}
+					onClose={this.handleClose}
+					ContentProps={{
+						'aria-describedby': 'message-id'
+					}}
+					message={<span id="message-id">{this.state.message}</span>}
+					action={[
+						<IconButton
+							key="close"
+							aria-label="Close"
+							color="inherit"
+							className={classes.close}
+							onClick={this.handleClose}
+						>
+							<CloseIcon />
+						</IconButton>
+					]}
+				/>
 			</Paper>
 		);
 	}
