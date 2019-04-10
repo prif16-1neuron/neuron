@@ -12,23 +12,23 @@ self.__precacheManifest = [
     "url": "/neuron/static/js/runtime~main.d491b413.js"
   },
   {
-    "revision": "c985abe64e2121288c61",
-    "url": "/neuron/static/js/main.c985abe6.chunk.js"
+    "revision": "8c6dfaf25cc1605c6afa",
+    "url": "/neuron/static/js/main.8c6dfaf2.chunk.js"
   },
   {
     "revision": "d94548ae54131c6435ae",
     "url": "/neuron/static/js/2.d94548ae.chunk.js"
   },
   {
-    "revision": "c985abe64e2121288c61",
-    "url": "/neuron/static/css/main.9903143d.chunk.css"
+    "revision": "8c6dfaf25cc1605c6afa",
+    "url": "/neuron/static/css/main.7d486327.chunk.css"
   },
   {
     "revision": "d94548ae54131c6435ae",
     "url": "/neuron/static/css/2.1e5b6a41.chunk.css"
   },
   {
-    "revision": "fcfbb143e7e4ddbe5fb6aaa39a7b29b1",
+    "revision": "5bd5cf9ba6bb7f096d93c159424389b2",
     "url": "/neuron/index.html"
   }
 ];
