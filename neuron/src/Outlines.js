@@ -29,25 +29,25 @@ export default function Outlines() {
 					<div>
 						<ul>
 							<li>
-								<a href="#">Welcome to Neuron Teaching Application</a>
+								<p alt="#">Welcome to Neuron Teaching Application</p>
 							</li>
 							<li>
-								<a href="#">
+								<p alt="#">
 									Here you will be able to teach your neuron network manually and automatically
-								</a>
+								</p>
 							</li>
 							<li>
-								<a href="#">
+								<p alt="#">
 									In “Manual” window everything is in your hands. You can type in X1 and X2 values and
 									try to guess weight W0, W1 and W2.
-								</a>
+								</p>
 							</li>
 							<li>
-								<a href="#">
+								<p alt="#">
 									“Auto” window gives you more advanced options. Firstly, all weights can be
 									calculated by application. Despite that you are also able to add X3 column, output
 									layer (algorithm used for learning), iteration length and learning rate (precision).
-								</a>
+								</p>
 							</li>
 						</ul>
 					</div>

@@ -139,7 +139,7 @@ const styles = theme => ({
 	'@media (max-width: 480px)': {
 		table: {
 			transform: 'scale(0.6)',
-			transformOrigin: '5%'
+			transformOrigin: '8%'
 		},
 		root: {
 			maxWidth: 'auto',

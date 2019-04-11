@@ -12,7 +12,7 @@ const styles = theme => ({
 		color: 'white',
 		width: 50,
 		height: 50,
-		backgroundColor: 'rgba(45, 25, 107, 1)',
+		backgroundColor: 'rgba(45, 25, 107, 0.9)',
 		position: 'fixed',
 		right: 25,
 		bottom: 25,
