@@ -203,7 +203,8 @@ class Table1 extends Component {
 			data: this.state.data.data,
 			layer: this.state.layer,
 			iterations: this.state.iterations,
-			rate: this.state.rate
+			rate: this.state.rate,
+			xColumns: this.state.xColumns
 		};
 		this.setState({ isLoading: true });
 		try {
@@ -223,6 +224,10 @@ class Table1 extends Component {
 			for (let i = 0; i < temp.length; i++) {
 				temp[i].t = parseInt(json[i]['t']);
 				temp[i].y = parseFloat(json[i]['y']);
+				temp[i].w0 = parseFloat(json[i]['w0']);
+				temp[i].w1 = parseFloat(json[i]['w1']);
+				temp[i].w2 = parseFloat(json[i]['w2']);
+				temp[i].w3 = parseFloat(json[i]['w3']);
 			}
 			this.setState({
 				data: { data: temp },
@@ -242,7 +247,13 @@ class Table1 extends Component {
 			} else if (row === 'rate' && (event.target.value < 0 || event.target.value > 1)) {
 				this.setState({ open: true, message: 'Wrong learning rate' });
 			} else {
+				let temp1 = [...this.state.data.data];
+				for (let i = 0; i < temp.length; i++) {
+					temp1[i].t = 0;
+					temp1[i].y = 0;
+				}
 				this.setState({ [row]: event.target.value });
+				this.setState({ data: data, data: { data:temp1 }});
 			}
 		} else {
 			if (parseInt(event.target.value) < 0 || parseInt(event.target.value) > 1) {
@@ -275,6 +286,25 @@ class Table1 extends Component {
 
 		this.setState({ open: false, message: '' });
 	};
+
+	componentDidMount() {
+		let w0 = Math.random();
+		let w1 = Math.random();
+		let w2 = Math.random();
+		let w3 = Math.random();
+
+		let temp = [...this.state.data.data];
+			for (let i = 0; i < temp.length; i++) {
+				temp[i].w0 = w0;
+				temp[i].w1 = w1;
+				temp[i].w2 = w2;
+				temp[i].w3 = w3;
+			}
+			this.setState({
+				data: { data: temp },
+				isLoading: false
+			});
+	}
 
 	render() {
 		var { data } = this.state.data;
@@ -460,7 +490,7 @@ class Table1 extends Component {
 														align="center"
 														padding="none"
 													>
-														{row.w0}
+														{parseFloat(row.w0).toFixed(2)}
 													</TableCell>
 												) : null}
 												{i === 0 ? (
@@ -471,7 +501,7 @@ class Table1 extends Component {
 														align="center"
 														padding="none"
 													>
-														{row.w1}
+														{parseFloat(row.w1).toFixed(2)}
 													</TableCell>
 												) : null}
 												{i === 0 ? (
@@ -482,7 +512,7 @@ class Table1 extends Component {
 														align="center"
 														padding="none"
 													>
-														{row.w2}
+														{parseFloat(row.w2).toFixed(2)}
 													</TableCell>
 												) : null}
 												<TableCell
@@ -491,7 +521,7 @@ class Table1 extends Component {
 													align="center"
 													padding="dense"
 												>
-													{row.y}
+													{parseFloat(row.y).toFixed(2)}
 												</TableCell>
 												<TableCell
 													id="t"
@@ -557,7 +587,7 @@ class Table1 extends Component {
 													align="center"
 													padding="none"
 												>
-													{row.w0}
+													{parseFloat(row.w0).toFixed(2)}
 												</TableCell>
 											) : null}
 											{i === 0 ? (
@@ -568,7 +598,7 @@ class Table1 extends Component {
 													align="center"
 													padding="none"
 												>
-													{row.w1}
+													{parseFloat(row.w1).toFixed(2)}
 												</TableCell>
 											) : null}
 											{i === 0 ? (
@@ -579,7 +609,7 @@ class Table1 extends Component {
 													align="center"
 													padding="none"
 												>
-													{row.w2}
+													{parseFloat(row.w2).toFixed(2)}
 												</TableCell>
 											) : null}
 											{i === 0 ? (
@@ -590,11 +620,11 @@ class Table1 extends Component {
 													align="center"
 													padding="none"
 												>
-													{row.w3}
+													{parseFloat(row.w3).toFixed(2)}
 												</TableCell>
 											) : null}
 											<TableCell id="y" className={classes.output} align="center" padding="dense">
-												{row.y}
+												{parseFloat(row.y).toFixed(2)}
 											</TableCell>
 											<TableCell id="t" className={classes.output} align="center" padding="dense">
 												{row.t}
